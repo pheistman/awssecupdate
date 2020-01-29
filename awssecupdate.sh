@@ -31,13 +31,13 @@ delip() {
 
 if [ "$CURRENTIP" == "0.0.0.0/0" ]; then
     addip
-    echo "Subject: AWS pihole security group added home IP address" | sendmail -v eapreko@icloud.com
+    echo "Subject: AWS pihole security group added home IP address" | sendmail -v pheistman@live.co.uk
 elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     delip
     addip
-    echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v eapreko@icloud.com
+    echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v pheistman@live.co.uk
 else [ "$CURRENTIP" == "$NEWIP" ] 
     echo "$(date) Nothing to do"
-#   echo "Subject: Nothing to do" | sendmail -f paulheistman@gmail.com eapreko@icloud.com
+#   echo "Subject: Nothing to do" | sendmail -v  pheistman@live.co.uk
 fi
 
