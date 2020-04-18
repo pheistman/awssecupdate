@@ -4,7 +4,7 @@
 
 set -x
 
-PATH=/home/nathan/.local/bin:/home/nathan/.local/bin:/home/nathan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/nathan/terraform:/home/nathan/.local/bin/aws
+#PATH=/home/nathan/.local/bin:/home/nathan/.local/bin:/home/nathan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/nathan/terraform:/home/nathan/.local/bin/aws
 
 clearvar() {
 	CURRENTIP="" NEWIP=""
@@ -31,13 +31,13 @@ delip() {
 
 if [ "$CURRENTIP" == "0.0.0.0/0" ]; then
     addip
-    echo "Subject: AWS pihole security group added home IP address" | sendmail -v pheistman@live.co.uk
+    echo "Subject: AWS pihole security group added home IP address" | sendmail -v eapreko@icloud.com
 elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     delip
     addip
-    echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v pheistman@live.co.uk
-else [ "$CURRENTIP" == "$NEWIP" ] 
+    echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v eapreko@icloud.com
+else [ "$CURRENTIP" == "$NEWIP/32" ] 
     echo "$(date) Nothing to do"
-#   echo "Subject: Nothing to do" | sendmail -v  pheistman@live.co.uk
+#   echo "Subject: Nothing to do" | sendmail -v  eapreko@icloud.com
 fi
 
