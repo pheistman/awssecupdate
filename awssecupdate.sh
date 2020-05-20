@@ -37,7 +37,7 @@ elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     addip
     echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v eapreko@icloud.com
 else [ "$CURRENTIP" == "$NEWIP/32" ] 
-#   echo "$(date) Nothing to do"
-    echo "Subject: Nothing to do" | sendmail -v  eapreko@icloud.com
+    echo "$(date) Nothing to do"
+#   echo "Subject: Nothing to do" | sendmail -v  eapreko@icloud.com
 fi
 
