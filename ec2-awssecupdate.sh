@@ -7,7 +7,7 @@ set -x
 #PATH=/home/nathan/.local/bin:/home/nathan/.local/bin:/home/nathan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/nathan/terraform:/home/nathan/.local/bin/aws
 
 clearvar() {
-        CURRENTIP="" NEWIP=""
+	CURRENTIP="" NEWIP=""
 }
 
 CURRENTIP=`aws ec2 describe-security-groups --group-id sg-0965167f16a94b955 | awk 'NR==7 {print $2}'`
@@ -35,12 +35,14 @@ delip() {
 
 if [ "$CURRENTIP" == "0.0.0.0/0" ]; then
     addip
-    #echo "Subject: AWS pihole security group added home IP address" | sendmail -v eapreko@icloud.com
+    echo -e  "Subject: AWS pihole security group added home IP address" > ./script-output.txt
+    /usr/sbin/ssmtp -v eapreko@icloud.com < ./script-output.txt
 elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     delip
     addip
-    #echo "Subject: UPDATED - AWS pihole security group updated home IP address" | sendmail -v eapreko@icloud.com
-else [ "$CURRENTIP" == "$NEWIP/32" ]
-    #echo "$(date) Nothing to do"
-#   echo "Subject: Nothing to do" | sendmail -v  eapreko@icloud.com
+    echo -e "Subject: UPDATED - AWS pihole security group updated home IP address" > ./script-output.txt
+    /usr/sbin/ssmtp -v eapreko@icloud.com < ./script-output.txt
+else [ "$CURRENTIP" == "$NEWIP/32" ] 
+    echo -e "Subject:Nothing to do\n\n$(date)\n" > ./script-output.txt
+#    /usr/sbin/ssmtp -v eapreko@icloud.com < ./script-output.txt
 fi
