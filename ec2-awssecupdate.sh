@@ -41,7 +41,7 @@ elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     delip
     addip
     OLDIPINFO=`aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=RevokeSecurityGroupIngress|tr "," "\n"|egrep -i "eventTime|eventName|ipRanges"|head -3|tr -d '"'`
-    echo -e "Subject: UPDATED - AWS pihole security group updated home IP address\n\n$OLDIPINFO\n" > ./script-output.txt
+    echo -e "Subject: UPDATED - AWS pihole security group updated home IP address\n\n$OLDIPINFO\n\n$NEWIP" > ./script-output.txt
     /usr/sbin/ssmtp -v eapreko@icloud.com < ./script-output.txt
 else [ "$CURRENTIP" == "$NEWIP/32" ] 
     echo -e "Subject:Nothing to do\n\n$(date)\n" > ./script-output.txt
