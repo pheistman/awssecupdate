@@ -7,7 +7,7 @@ set -x
 #PATH=/home/nathan/.local/bin:/home/nathan/.local/bin:/home/nathan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/nathan/terraform:/home/nathan/.local/bin/aws
 
 clearvar() {
-	CURRENTIP="" NEWIP=""
+	CURRENTIP="" NEWIP="" OLDIPINFO=""
 }
 
 CURRENTIP=`aws ec2 describe-security-groups --group-id sg-0965167f16a94b955 | awk 'NR==7 {print $2}'`
@@ -40,7 +40,8 @@ if [ "$CURRENTIP" == "0.0.0.0/0" ]; then
 elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
     delip
     addip
-    echo -e "Subject: UPDATED - AWS pihole security group updated home IP address" > ./script-output.txt
+    OLDIPINFO=`aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=RevokeSecurityGroupIngress|tr "," "\n"|egrep -i "eventTime|eventName|ipRanges"|head -3|tr -d '"'`
+    echo -e "Subject: UPDATED - AWS pihole security group updated home IP address\n\n$OLDIPINFO\n" > ./script-output.txt
     /usr/sbin/ssmtp -v eapreko@icloud.com < ./script-output.txt
 else [ "$CURRENTIP" == "$NEWIP/32" ] 
     echo -e "Subject:Nothing to do\n\n$(date)\n" > ./script-output.txt
