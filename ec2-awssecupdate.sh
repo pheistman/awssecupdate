@@ -10,7 +10,7 @@ clearvar() {
 	CURRENTIP="" NEWIP="" OLDIPINFO=""
 }
 
-CURRENTIP=`aws ec2 describe-security-groups --group-id sg-0965167f16a94b955 | awk 'NR==7 {print $2}'`
+CURRENTIP=`aws ec2 describe-security-groups --group-id sg-0965167f16a94b955 |grep 'pihole access'|awk '{print $2}'|head -1`
 NEWIP=`curl -X GET "https://api.cloudflare.com/client/v4/zones/212e54119a66dc835b5138db1929dd46/dns_records/01913c532b52c894ab874678ddb0b49d" \
 -H "X-Auth-Email: pheistman@live.co.uk" \
 -H "X-Auth-Key: ccd9ce6cff57c2cdb2a5c302f1aa7816a1bb5" \
