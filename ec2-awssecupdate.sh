@@ -34,19 +34,19 @@ delip() {
 }
 
 if [ "$CURRENTIP" == "0.0.0.0/0" ]; then
-    echo "Adding new IP info"
+    echo "$(date) Adding new IP info" > ~/awslog.txt
     addip
     #echo -e  "Subject: AWS pihole security group added home IP address" > ./secupdate.txt
     #/usr/sbin/ssmtp -v eapreko@icloud.com < ./secupdate.txt
 elif [ "$CURRENTIP" !=  "$NEWIP/32" ]; then
-    echo "Deleting and adding new IP info"
+    echo "$(date) Deleting and adding new IP info" > ~/awslog.txt
     delip
     addip
     OLDIPINFO=`aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=RevokeSecurityGroupIngress|tr "," "\n"|egrep -i "eventTime|eventName|ipRanges"|head -3|tr -d '"'`
     #echo -e "Subject: UPDATED - AWS pihole security group updated home IP address\n\n$OLDIPINFO\n\n$NEWIP" > ./secupdate.txt
     #/usr/sbin/ssmtp -v eapreko@icloud.com < ./secupdate.txt
 else [ "$CURRENTIP" == "$NEWIP/32" ]
-    echo "Nothing to do!"
+    echo "$(date) Nothing to do!" > ~/awslog.txt
     #echo -e "Subject:Nothing to do\n\n$(date)\n" > ./secupdate.txt
 #    /usr/sbin/ssmtp -v eapreko@icloud.com < ./secupdate.txt
 fi
